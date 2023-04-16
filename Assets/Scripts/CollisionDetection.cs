@@ -14,6 +14,8 @@ public class CollisionDetection : MonoBehaviour
     GameObject gm3;
     private bool was_hit = false;
 
+
+    //random color
     Vector3 hash31(float p)
     {
         Vector3 pp = new Vector3(0.1031f, 0.1030f, 0.0973f);
@@ -60,23 +62,5 @@ public class CollisionDetection : MonoBehaviour
             
         }
 
-
-        /*
-       if(bc1.bounds.Intersects(bc2.bounds) && !was_hit)
-        {
-            Vector3 h = hash31(Time.time);
-            Color col = new Color(h.x, h.y, h.z, 1f);
-            sr.color = col;
-            was_hit = true;
-        }
-        else if(bc1.bounds.Intersects(bc2.bounds) && was_hit)
-        {
-            was_hit = true;
-        }
-       else
-        {
-            was_hit = false;
-        }
-        */
     }
 }
