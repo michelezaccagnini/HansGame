@@ -14,6 +14,13 @@ public class CollisionDetection : MonoBehaviour
     GameObject gm3;
     private bool was_hit = false;
 
+    [SerializeField]
+    AudioSource sources;
+    [SerializeField] float soundDelay = 0f;
+    [SerializeField] float startingPitch = 0f;
+    [SerializeField] float timeToDecrease = 0f;
+    [SerializeField] float timePoint = 0f;
+
 
     //random color
     Vector3 hash31(float p)
@@ -35,7 +42,19 @@ public class CollisionDetection : MonoBehaviour
         bc2 = gm2.GetComponent<BoxCollider2D>();
         bc3 = gm3.GetComponent<BoxCollider2D>();
         sr = GetComponent<SpriteRenderer>();
+        sources.Stop();
+        
+        
+        //Initialize the pitch
+        //sources.pitch = startingPitch;
+        sources.time = sources.clip.length * timePoint;
     }
+
+    private void OnGUI()
+    {
+        sources.pitch = startingPitch;
+    }
+
 
     void Update()
     {
@@ -44,6 +63,7 @@ public class CollisionDetection : MonoBehaviour
             Vector3 col = hash31(Time.time);
             sr.color = new Color(col.x,col.y,col.z,1f) ; 
             was_hit = true;
+            sources.Play();
         }
         else if (bc1.bounds.Intersects(bc2.bounds) && was_hit)//it's hitting but it was already hitting before (old hit)
         {
@@ -52,6 +72,7 @@ public class CollisionDetection : MonoBehaviour
         else//it's not hitting
         {
             was_hit = false;
+            sources.Stop();
         }
 
         //triangle object
