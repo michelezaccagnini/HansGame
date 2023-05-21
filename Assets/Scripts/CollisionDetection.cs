@@ -22,6 +22,7 @@ public class CollisionDetection : MonoBehaviour
     [SerializeField] float startingPitch = 0f;
     [SerializeField] float timeToDecrease = 0f;
     [SerializeField] float timePoint = 0f;
+    [SerializeField] float delay = 1;
 
 
     //random color
@@ -50,13 +51,15 @@ public class CollisionDetection : MonoBehaviour
         
         
         //Initialize the pitch
-        //sources.pitch = startingPitch;
-        //sources.time = sources.clip.length * timePoint;
+        randPlay.pitch = startingPitch;
+        randPlay.time = randPlay.clip.length * timePoint;
+       
     }
 
     private void OnGUI()
     {
         randPlay.pitch = startingPitch;
+        
     }
 
 
@@ -68,7 +71,8 @@ public class CollisionDetection : MonoBehaviour
             sr.color = new Color(col.x,col.y,col.z,1f) ; 
             was_hit = true;
             randPlay.clip = audioClipArray[Random.Range(0, audioClipArray.Length)];
-            randPlay.Play();
+            randPlay.PlayDelayed(delay);
+            //randPlay.Play();
         }
         else if (bc1.bounds.Intersects(bc2.bounds) && was_hit)//it's hitting but it was already hitting before (old hit)
         {
@@ -77,7 +81,7 @@ public class CollisionDetection : MonoBehaviour
         else//it's not hitting
         {
             was_hit = false;
-            randPlay.Stop();
+            //randPlay.Stop();
         }
 
         //triangle object
