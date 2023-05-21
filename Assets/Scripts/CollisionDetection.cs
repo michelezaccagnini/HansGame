@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CollisionDetection : MonoBehaviour
 {
+    private AudioSource randPlay;
+    public AudioClip[] audioClipArray; // drop many soundclips into the inspector
     private BoxCollider2D bc1;
     private BoxCollider2D bc2;
     private BoxCollider2D bc3;
@@ -14,8 +16,8 @@ public class CollisionDetection : MonoBehaviour
     GameObject gm3;
     private bool was_hit = false;
 
-    [SerializeField]
-    AudioSource sources;
+    //[SerializeField]
+    //AudioSource sources;
     [SerializeField] float soundDelay = 0f;
     [SerializeField] float startingPitch = 0f;
     [SerializeField] float timeToDecrease = 0f;
@@ -38,21 +40,23 @@ public class CollisionDetection : MonoBehaviour
     }
     void Awake()
     {
+        randPlay = GetComponent<AudioSource>();
+        randPlay.clip = audioClipArray[Random.Range(0, audioClipArray.Length)];
         bc1 = GetComponent<BoxCollider2D>();
         bc2 = gm2.GetComponent<BoxCollider2D>();
         bc3 = gm3.GetComponent<BoxCollider2D>();
         sr = GetComponent<SpriteRenderer>();
-        sources.Stop();
+        randPlay.Stop();
         
         
         //Initialize the pitch
         //sources.pitch = startingPitch;
-        sources.time = sources.clip.length * timePoint;
+        //sources.time = sources.clip.length * timePoint;
     }
 
     private void OnGUI()
     {
-        sources.pitch = startingPitch;
+        randPlay.pitch = startingPitch;
     }
 
 
@@ -63,7 +67,8 @@ public class CollisionDetection : MonoBehaviour
             Vector3 col = hash31(Time.time);
             sr.color = new Color(col.x,col.y,col.z,1f) ; 
             was_hit = true;
-            sources.Play();
+            randPlay.clip = audioClipArray[Random.Range(0, audioClipArray.Length)];
+            randPlay.Play();
         }
         else if (bc1.bounds.Intersects(bc2.bounds) && was_hit)//it's hitting but it was already hitting before (old hit)
         {
@@ -72,7 +77,7 @@ public class CollisionDetection : MonoBehaviour
         else//it's not hitting
         {
             was_hit = false;
-            sources.Stop();
+            randPlay.Stop();
         }
 
         //triangle object

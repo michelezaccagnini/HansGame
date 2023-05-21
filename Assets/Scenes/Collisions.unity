@@ -1617,9 +1617,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f08e990418eb3b4280ba38f34970989, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioClipArray:
+  - {fileID: 8300000, guid: b1c006edd50fb284881cb567d949ed29, type: 3}
+  - {fileID: 8300000, guid: 43ce9fb6173eb6f4783c36b546912d28, type: 3}
+  - {fileID: 8300000, guid: 4b85ddb66425bc74b8f2fae6eff65565, type: 3}
   gm2: {fileID: 253201380}
   gm3: {fileID: 901302061}
-  sources: {fileID: 565499681}
   soundDelay: 0
   startingPitch: 1
   timeToDecrease: 0
