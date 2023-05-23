@@ -8,7 +8,6 @@ public class cmanAnim : MonoBehaviour
 {
     int pcount;
     [SerializeField] Slider slider;
-    
 
     private float sli_val;
     private float x_pos;
@@ -18,7 +17,24 @@ public class cmanAnim : MonoBehaviour
     [SerializeField] float bounds = 2f;
     bool direction = false;
     Vector3 init_pos;
+    private BoxCollider2D bc1;
+    private BoxCollider2D bc2;
+    [SerializeField]
+    GameObject gm2;
 
+    Vector3 hash31(float p)
+    {
+        Vector3 pp = new Vector3(0.1031f, 0.1030f, 0.0973f);
+        Vector3 p3 = new Vector3(p, p, p);
+        p3 = Vector3.Scale(p3, pp);
+        p3 = new Vector3(p3.x % 1f, p3.y % 1f, p3.z % 1f);
+        Vector3 p3a = new Vector3(p3.y, p3.z, p3.x) + new Vector3(33.33f, 33.33f, 33.33f);
+        float d = Vector3.Dot(p3, p3a);
+        p3 = p3 + new Vector3(d, d, d);
+        p3 = Vector3.Scale(new Vector3(p3.x, p3.x, p3.y) + new Vector3(p3.y, p3.z, p3.z), new Vector3(p3.z, p3.y, p3.x));
+        p3 = new Vector3(p3.x % 1f, p3.y % 1f, 0);
+        return p3;
+    }
     void Start()
     {
         slider.onValueChanged.AddListener((v) =>
@@ -28,6 +44,8 @@ public class cmanAnim : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         //anim = gameObject.GetComponent<Animator>();
         init_pos = transform.position;
+        bc1 = GetComponent<BoxCollider2D>();
+        bc2 = gm2.GetComponent<BoxCollider2D>();
     }
 
     public void Restart()
@@ -38,8 +56,16 @@ public class cmanAnim : MonoBehaviour
 
     void Update()
     {
-        Vector3 pos =  transform.position;
+        Vector3 pos = transform.position;
         
+        if (bc1.bounds.Intersects(bc2.bounds))
+        {
+            Vector3 offset = bc2.bounds.center + bc2.bounds.extents;
+            init_pos = hash31(Time.time) + offset;
+            //transform.position = new Vector3(init_pos.x,init_pos.y,0);
+            Debug.Log(transform.position);
+
+        }
         
         if (Input.GetMouseButton(0))
         {
@@ -50,16 +76,16 @@ public class cmanAnim : MonoBehaviour
             {
                 gameObject.SetActive(false);
                 PlayerCount.Count -= 1;
-                
+
             }
-            if(PlayerCount.Count < 1)
+            if (PlayerCount.Count < 1)
             {
-                Debug.Log("GAME OVER"); 
+                Debug.Log("GAME OVER");
                 Invoke("Restart", 2f);
                 PlayerCount.Count = 3;
             }
         }
-        float wave_motion = Mathf.Sin(Time.time * Mathf.PI * 2f * waveSpeed);// data_in.GetCCbyIndex(cc_index);
+        float wave_motion = Mathf.Sin(Time.time * Mathf.PI * 2f * waveSpeed)*0.1f;// data_in.GetCCbyIndex(cc_index);
 
         if (Mathf.Abs(x_pos) > bounds)
             direction = !direction;
@@ -75,4 +101,7 @@ public class cmanAnim : MonoBehaviour
         spriteRenderer.flipX = direction;
         transform.position = init_pos + new Vector3(x_pos, wave_motion * 1f, 0);
     }
+        
+        
+
 }
