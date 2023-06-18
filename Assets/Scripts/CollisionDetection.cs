@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class CollisionDetection : MonoBehaviour
 {
+    private bool loopOn;
+    [SerializeField ] float loopLength = 2f;
+    private float loopTimer;
     private AudioSource randPlay;
     public AudioClip[] audioClipArray; // drop many soundclips into the inspector
     private BoxCollider2D bc1;
@@ -67,20 +70,31 @@ public class CollisionDetection : MonoBehaviour
     {
         if (bc1.bounds.Intersects(bc2.bounds) && !was_hit)//new hit
         {
+            
+            loopOn = true;
             Vector3 col = hash31(Time.time);
             sr.color = new Color(col.x,col.y,col.z,1f) ; 
             was_hit = true;
             randPlay.clip = audioClipArray[Random.Range(0, audioClipArray.Length)];
             randPlay.PlayDelayed(delay);
+            
+            randPlay.loop = loopOn ;
+            Debug.Log(loopTimer);
             //randPlay.Play();
         }
         else if (bc1.bounds.Intersects(bc2.bounds) && was_hit)//it's hitting but it was already hitting before (old hit)
         {
+            loopTimer += Time.deltaTime;
+            bool endLoop = loopTimer < loopLength;
+
+            randPlay.loop = endLoop;
             was_hit = true;
         }
         else//it's not hitting
         {
             was_hit = false;
+            loopOn = false;
+            loopTimer = 0;
             //randPlay.Stop();
         }
 

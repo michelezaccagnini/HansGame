@@ -390,7 +390,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5bfa6b5d30750549b2e47f33cbf2cd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ease: 21
+  jumpHeight: 4
   slider: {fileID: 1361923880}
+  jumpSpeed: 3
   speed: 1
   waveSpeed: 1
   bounds: 2

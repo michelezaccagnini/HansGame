@@ -5,8 +5,15 @@ using UnityEngine.UI;
 
 public class CmanAnim2 : MonoBehaviour
 {
+    [SerializeField] EasingFunction.Ease ease;
+    EasingFunction.Function jumpFunc;
+    [SerializeField] float jumpHeight = 2f;
+    bool jDown = false;
+
+
     int pcount;
     [SerializeField] Slider slider;
+    [SerializeField] float jumpSpeed = 50f;
 
 
     private float sli_val;
@@ -23,6 +30,7 @@ public class CmanAnim2 : MonoBehaviour
 
     void Start()
     {
+        jumpFunc = EasingFunction.GetEasingFunction(ease);
         slider.onValueChanged.AddListener((v) =>
         {
             sli_val = v;
@@ -31,24 +39,39 @@ public class CmanAnim2 : MonoBehaviour
         //anim = gameObject.GetComponent<Animator>();
         init_pos = transform.position;
     }
-
+    private void OnGUI()
+    {
+        jumpFunc = EasingFunction.GetEasingFunction(ease);
+    }
 
     void Update()
     {
         Vector3 pos = transform.position;
+        
         float wave_motion = 0;// Mathf.Sin(Time.time * Mathf.PI * 2f * waveSpeed);// data_in.GetCCbyIndex(cc_index);
         if (Input.GetKeyDown("space"))
         {
             jump = true;
+            jDown = false;
         }
-        if (jump )
+        if (jump && !jDown)
         {
-            jumpRamp += Time.deltaTime*6f;
+            jumpRamp += jumpFunc(0,jumpHeight,Time.deltaTime*jumpSpeed);
+            //Debug.Log(jumpRamp);
         }
-        if(jumpRamp > Mathf.PI)
+        if(jumpRamp > jumpHeight -0.1f)
         {
-            jumpRamp = 0;
-            jump = false;
+            jDown = true;
+       
+        }
+        if(jDown) 
+        {
+            jumpRamp -=  jumpFunc(0,jumpHeight,Time.deltaTime * jumpSpeed);
+            if(jumpRamp < 0.1f)
+            {
+                jump = false;
+                jDown = false;
+            }
         }
 
         if (Mathf.Abs(x_pos) > bounds)
@@ -63,6 +86,6 @@ public class CmanAnim2 : MonoBehaviour
         }
         //x_pos = (x_pos -  * sli_val+ bounds) % bounds;
         spriteRenderer.flipX = direction;
-        transform.position = init_pos + new Vector3(x_pos, Mathf.Pow(Mathf.Sin(jumpRamp),0.5f), 0);
+        transform.position = init_pos + new Vector3(x_pos,jumpRamp, 0);
     }
 }
