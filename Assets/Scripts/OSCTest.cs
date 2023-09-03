@@ -1,0 +1,28 @@
+using UnityEngine;
+using System.Collections;
+using OscJack;
+
+public class OSCTest : MonoBehaviour
+{
+    OscServer _server;
+
+    void Start()
+    {
+        _server = new OscServer(9000); // Port number
+
+        _server.MessageDispatcher.AddCallback(
+            "/test", // OSC address
+            (string address, OscDataHandle data) => {
+                Debug.Log(string.Format("({0}, {1})",
+                    data.GetElementAsFloat(0),
+                    data.GetElementAsFloat(1)));
+            }
+        );
+    }
+
+    void OnDestroy()
+    {
+        _server?.Dispose();
+        _server = null;
+    }
+}
