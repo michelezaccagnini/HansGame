@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using OscJack;
 
-public class TriangleColor : MonoBehaviour
+public class OSC_receiver : MonoBehaviour
 {
     Material mat;
 
     OscServer _server;
-    [SerializeField] int oscPort = 9001;
+    [SerializeField] int oscPort = 9000;
     float red;
     float green;
     float blue;
@@ -18,7 +18,6 @@ public class TriangleColor : MonoBehaviour
     Vector3 scale;
     void Start()
     {
-        mat = GetComponent<SpriteRenderer>().material;
         _server = new OscServer(oscPort); // Port number
 
         _server.MessageDispatcher.AddCallback(
@@ -36,7 +35,7 @@ public class TriangleColor : MonoBehaviour
             (string address, OscDataHandle data) => {
 
                 pos.x = data.GetElementAsFloat(0);
-                pos.y = data.GetElementAsFloat(1);               
+                pos.y = data.GetElementAsFloat(1);
             }
         );
         _server.MessageDispatcher.AddCallback(
@@ -64,10 +63,10 @@ public class TriangleColor : MonoBehaviour
     }
     private void Update()
     {
-        //Debug.Log(osc_in);
-        mat.color = new Color(red, blue, green,alpha);
+       /* //Debug.Log(osc_in);
+        mat.color = new Color(red, blue, green, alpha);
         transform.position = new Vector3(pos.x, pos.y, 0);
-        transform.rotation = Quaternion.Euler(0,0,rota * 360f);
-        transform.localScale = scale;
+        transform.rotation = Quaternion.Euler(0, 0, rota * 360f);
+        transform.localScale = scale;*/
     }
 }
