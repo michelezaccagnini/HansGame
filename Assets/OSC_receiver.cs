@@ -9,13 +9,10 @@ public class OSC_receiver : MonoBehaviour
 
     OscServer _server;
     [SerializeField] int oscPort = 9000;
-    float red;
-    float green;
-    float blue;
-    float alpha;
-    Vector2 pos;
-    float rota;
-    Vector3 scale;
+    public Color obj1_col;
+    public Vector2 obj1_pos;
+    public float obj1_rota;
+    public Vector3 obj1_scale;
     void Start()
     {
         _server = new OscServer(oscPort); // Port number
@@ -24,34 +21,34 @@ public class OSC_receiver : MonoBehaviour
             "/color", // OSC address
             (string address, OscDataHandle data) => {
 
-                red = data.GetElementAsFloat(0);
-                green = data.GetElementAsFloat(1);
-                blue = data.GetElementAsFloat(2);
-                alpha = data.GetElementAsFloat(3);
+                obj1_col.r = data.GetElementAsFloat(0);
+                obj1_col.g = data.GetElementAsFloat(1);
+                obj1_col.b = data.GetElementAsFloat(2);
+                obj1_col.a = data.GetElementAsFloat(3);
             }
         );
         _server.MessageDispatcher.AddCallback(
             "/position", // OSC address
             (string address, OscDataHandle data) => {
 
-                pos.x = data.GetElementAsFloat(0);
-                pos.y = data.GetElementAsFloat(1);
+                obj1_pos.x = data.GetElementAsFloat(0);
+                obj1_pos.y = data.GetElementAsFloat(1);
             }
         );
         _server.MessageDispatcher.AddCallback(
             "/rotation", // OSC address
             (string address, OscDataHandle data) => {
 
-                rota = data.GetElementAsFloat(0);
+                obj1_rota = data.GetElementAsFloat(0);
             }
         );
         _server.MessageDispatcher.AddCallback(
             "/scale", // OSC address
             (string address, OscDataHandle data) => {
 
-                scale.x = data.GetElementAsFloat(0);
-                scale.y = data.GetElementAsFloat(1);
-                scale.z = data.GetElementAsFloat(2);
+                obj1_scale.x = data.GetElementAsFloat(0);
+                obj1_scale.y = data.GetElementAsFloat(1);
+                obj1_scale.z = data.GetElementAsFloat(2);
             }
         );
     }
@@ -63,10 +60,6 @@ public class OSC_receiver : MonoBehaviour
     }
     private void Update()
     {
-       /* //Debug.Log(osc_in);
-        mat.color = new Color(red, blue, green, alpha);
-        transform.position = new Vector3(pos.x, pos.y, 0);
-        transform.rotation = Quaternion.Euler(0, 0, rota * 360f);
-        transform.localScale = scale;*/
+
     }
 }
