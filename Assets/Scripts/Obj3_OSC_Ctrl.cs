@@ -6,7 +6,8 @@ public class Obj3_OSC_Ctrl : MonoBehaviour
 {
     Material mat;
     [SerializeField] GameObject osc_receiver;
-    OSC_receiver osc;
+    [SerializeField] Color col_multiply;
+    OSC_4_receiver osc;
     Color col;
     Vector2 pos;
     float rota;
@@ -15,14 +16,14 @@ public class Obj3_OSC_Ctrl : MonoBehaviour
     void Start()
     {
         mat = GetComponent<SpriteRenderer>().material;
-        osc = osc_receiver.GetComponent<OSC_receiver>();
+        osc = osc_receiver.GetComponent<OSC_4_receiver>();
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        col = osc.obj3_col;
+        col = osc.obj3_col * col_multiply;
         pos = osc.obj3_pos;
         rota = osc.obj3_rota;
         scale = osc.obj3_scale;
